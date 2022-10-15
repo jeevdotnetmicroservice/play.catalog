@@ -35,7 +35,7 @@ namespace Play.Catalog.Service
 
             services.AddMongo()
                     .AddMongoRepository<Item>("items")
-                    .AddMassTransitWithRabbitMq()
+                    .AddMassTransitWithMessageBroker(Configuration)
                     .AddJwtBearerAuthentication();
 
             services.AddAuthorization(options =>
