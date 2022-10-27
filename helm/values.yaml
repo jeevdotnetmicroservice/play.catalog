@@ -1,0 +1,12 @@
+microserviceName: "catalog"
+
+image:
+  repository: jeevplayeconomy.azurecr.io/play.catalog
+  tag: 1.0.5
+
+envVariables:
+  name: ServiceSettings__Authority
+  value: https://jeevplayeconomy.eastus.cloudapp.azure.com/identity-svc
+
+container:
+  port: 5000
