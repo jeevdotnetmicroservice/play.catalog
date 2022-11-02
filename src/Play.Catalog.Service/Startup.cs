@@ -65,7 +65,8 @@ namespace Play.Catalog.Service
             services.AddHealthChecks()
                 .AddMongoDb();
             services.AddSeqLogging(Configuration)
-                    .AddTracing(Configuration);
+                    .AddTracing(Configuration)
+                    .AddMetrics(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
