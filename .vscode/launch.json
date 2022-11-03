@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Play.Catalog.Service/bin/Debug/net5.0/Play.Catalog.Service.dll",
+            "program": "${workspaceFolder}/src/Play.Catalog.Service/bin/Debug/net6.0/Play.Catalog.Service.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Play.Catalog.Service",
             "stopAtEntry": false,
