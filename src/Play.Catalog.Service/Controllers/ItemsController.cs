@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Play.Catalog.Contracts;
 using Play.Catalog.Service.Dtos;
 using Play.Catalog.Service.Entities;
 using Play.Common;
+using Play.Common.Settings;
 
 namespace Play.Catalog.Service.Controllers
 {
@@ -20,11 +23,19 @@ namespace Play.Catalog.Service.Controllers
 
         private readonly IRepository<Item> itemsRepository;
         private readonly IPublishEndpoint publishEndpoint;
+        private readonly Counter<int> catalogItemsUpdatedCounter;
 
-        public ItemsController(IRepository<Item> itemsRepository, IPublishEndpoint publishEndpoint)
+        public ItemsController(
+            IRepository<Item> itemsRepository, 
+            IPublishEndpoint publishEndpoint,
+            IConfiguration configuration)
         {
             this.itemsRepository = itemsRepository;
             this.publishEndpoint = publishEndpoint;
+            var settings = configuration.GetSection(nameof(ServiceSettings))
+                                                .Get<ServiceSettings>();
+            Meter meter = new(settings.ServiceName);
+            catalogItemsUpdatedCounter = meter.CreateCounter<int>("catalogItemsUpdated");
         }
 
         [HttpGet]
@@ -99,6 +110,10 @@ namespace Play.Catalog.Service.Controllers
                 existingItem.Name, 
                 existingItem.Description,
                 existingItem.Price));
+            
+            catalogItemsUpdatedCounter.Add(1, new KeyValuePair<string, object>
+                (nameof(existingItem.Id), 
+                existingItem.Id));
 
             return NoContent();
         }

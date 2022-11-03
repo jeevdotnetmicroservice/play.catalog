@@ -85,7 +85,7 @@ namespace Play.Catalog.Service
                         .AllowAnyMethod();
                 });                
             }
-
+            app.UseOpenTelemetryPrometheusScrapingEndpoint();
             app.UseHttpsRedirection();
 
             app.UseRouting();
